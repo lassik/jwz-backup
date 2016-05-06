@@ -1,0 +1,36 @@
+#!/bin/bash -
+#
+# TODO: Tell Spotlight not to index the backup drive.
+#
+
+set -eu -o pipefail
+cd
+
+# Directory where your backup disk is mounted. No slash at the end!
+BACKUP_MOUNT=${BACKUP_MOUNT:-/Volumes/Backup}
+
+# Text file where error messages from the last run are logged.
+ERROR_LOG=~/backup-errors.log
+
+mount | grep -qF " on $BACKUP_MOUNT " || \
+    { echo "Backup disk not mounted" >&2; exit 1; }
+
+err=0
+sudo rsync -vax --delete --ignore-errors \
+     --exclude private/var/vm \
+     / "$BACKUP_MOUNT/" 2>"$ERROR_LOG" || err=1
+
+if (( err )); then
+    echo
+    echo "==== ERRORS OCCURRED: ===="
+    echo
+    cat "$ERROR_LOG"
+    echo
+fi
+
+MINUTES=$(( (SECONDS + 59) / 60 ))  # Bashism.
+echo -n "Backup took $MINUTES minutes."
+if (( err )); then echo -n " No errors."; fi
+echo
+
+return 0  # Always "succeed".
