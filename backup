@@ -25,9 +25,9 @@ if (( err )); then
     echo "==== ERRORS OCCURRED: ===="
     echo
     cat "$ERROR_LOG"
-    echo
 fi
 
+echo
 MINUTES=$(( (SECONDS + 59) / 60 ))  # Bashism.
 echo -n "Backup took $MINUTES minutes."
 if (( err == 0 )); then echo -n " No errors."; fi
