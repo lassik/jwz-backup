@@ -30,7 +30,7 @@ fi
 
 MINUTES=$(( (SECONDS + 59) / 60 ))  # Bashism.
 echo -n "Backup took $MINUTES minutes."
-if (( err )); then echo -n " No errors."; fi
+if (( err == 0 )); then echo -n " No errors."; fi
 echo
 
-return 0  # Always "succeed".
+true  # Always "succeed".
