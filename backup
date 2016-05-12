@@ -12,6 +12,9 @@ BACKUP_MOUNT=${BACKUP_MOUNT:-/Volumes/Backup}
 # Text file where error messages from the last run are logged.
 ERROR_LOG=~/backup-errors.log
 
+# Text file keeping stats of how many minutes each backup took.
+BACKUP_DURATIONS=~/backup-durations.log
+
 mount | grep -qF " on $BACKUP_MOUNT " || \
     { echo "Backup disk not mounted" >&2; exit 1; }
 
@@ -29,6 +32,7 @@ fi
 
 echo
 MINUTES=$(( (SECONDS + 59) / 60 ))  # Bashism.
+echo "$MINUTES" >> "$BACKUP_DURATIONS"
 echo -n "Backup took $MINUTES minutes."
 if (( err == 0 )); then echo -n " No errors."; fi
 echo
