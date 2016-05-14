@@ -9,8 +9,8 @@ cd
 # Directory where your backup disk is mounted. No slash at the end!
 BACKUP_MOUNT=${BACKUP_MOUNT:-/Volumes/Backup}
 
-# Text file where error messages from the last run are logged.
-ERROR_LOG=~/backup-errors.log
+# Text file where rsync output from the latest run is logged.
+BACKUP_LOG=~/backup-last-run.log
 
 # Text file keeping stats of how many minutes each backup took.
 BACKUP_DURATIONS=~/backup-durations.log
@@ -21,13 +21,13 @@ mount | grep -qF " on $BACKUP_MOUNT " || \
 err=0
 sudo rsync -vax --delete --ignore-errors \
      --exclude private/var/vm \
-     / "$BACKUP_MOUNT/" 2>"$ERROR_LOG" || err=1
+     / "$BACKUP_MOUNT/" 2>&1 | tee "$BACKUP_LOG" || err=1
 
 if (( err )); then
     echo
     echo "==== ERRORS OCCURRED: ===="
     echo
-    cat "$ERROR_LOG"
+    grep -F ': ' "$BACKUP_LOG"
 fi
 
 echo
