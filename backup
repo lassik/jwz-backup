@@ -1,8 +1,4 @@
 #!/bin/bash -
-#
-# TODO: Tell Spotlight not to index the backup drive.
-#
-
 set -eu -o pipefail
 cd
 
@@ -19,6 +15,7 @@ mkdir -p "$BACKUP_LOGDIR"
 
 err=0
 sudo rsync -vax --delete --ignore-errors \
+     --exclude /.Spotlight-V100 \
      --exclude /private/var/vm \
      / "$BACKUP_MOUNT/" 2>&1 | tee "$BACKUP_LOGDIR/lastrun.log" || err=1
 
