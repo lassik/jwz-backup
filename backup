@@ -15,7 +15,6 @@ mkdir -p "$BACKUP_LOGDIR"
 
 err=0
 sudo rsync -vax --delete --ignore-errors \
-     --extended-attributes \
      --exclude /.Spotlight-V100 \
      --exclude /private/var/vm \
      / "$BACKUP_MOUNT/" 2>&1 | tee "$BACKUP_LOGDIR/lastrun.log" || err=1
