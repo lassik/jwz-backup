@@ -3,3 +3,4 @@ These are complete lines of rsync output, showcasing error message formats:
 file has vanished: "/private/var/log/system.log.0.gz"
 send_files failed to open "/tmp/.._f_000322.6VXCHH": No such file or directory
 copyfile(/dev/null, private/tmp/icssuis502, COPYFILE_METADATA) failed:102
+rsync warning: some files vanished before they could be transferred (code 24) at /SourceCache/rsync/rsync-40/rsync/main.c(992) [sender=2.6.9]
