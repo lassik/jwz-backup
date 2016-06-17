@@ -2,6 +2,13 @@
 set -eu -o pipefail
 cd
 
+g_sleep=0
+
+if [[ "${1:-}" == --sleep ]]; then
+    echo "Going to sleep once the backup is done."
+    g_sleep=1
+fi
+
 # Directory where your backup disk is mounted. No slash at the end!
 BACKUP_MOUNT=${BACKUP_MOUNT:-/Volumes/Backup}
 
@@ -34,4 +41,5 @@ echo -n "Backup took $MINUTES minutes."
 if (( err == 0 )); then echo -n " No errors."; fi
 echo
 
+if (( g_sleep )); then exec pmset sleepnow; fi
 true  # Always "succeed".
