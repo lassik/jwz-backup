@@ -23,7 +23,8 @@ if (( err )); then
     echo
     echo "==== ERRORS OCCURRED: ===="
     echo
-    grep -E ': | failed:' "$BACKUP_LOGDIR/lastrun.log"
+    grep -E ': | failed:' "$BACKUP_LOGDIR/lastrun.log" \
+        | tee "$BACKUP_LOGDIR/lasterrors.log"
 fi
 
 echo
