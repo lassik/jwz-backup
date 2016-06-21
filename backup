@@ -25,13 +25,14 @@ sudo nice -n 20 rsync -vax --delete --ignore-errors \
      --exclude /.Spotlight-V100 \
      --exclude /private/var/vm \
      / "$BACKUP_MOUNT/" 2>&1 | tee "$BACKUP_LOGDIR/lastrun.log" || err=1
+grep -E ': | failed:' "$BACKUP_LOGDIR/lastrun.log" \
+     > "$BACKUP_LOGDIR/lasterrors.log"
 
 if (( err )); then
     echo
     echo "==== ERRORS OCCURRED: ===="
     echo
-    grep -E ': | failed:' "$BACKUP_LOGDIR/lastrun.log" \
-        | tee "$BACKUP_LOGDIR/lasterrors.log"
+    cat "$BACKUP_LOGDIR/lasterrors.log"
 fi
 
 echo
